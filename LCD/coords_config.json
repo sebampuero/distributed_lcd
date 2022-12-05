@@ -1,0 +1,56 @@
+{
+    "TemperatureService": {
+        "separation_line": [0,48,-1,48],
+        "pi2_logo": {
+            "coords": [0,0],
+            "size": 25
+        },
+        "pi4_logo": {
+            "coords": [0,22],
+            "size": 25
+        },
+        "pi2_temp": {
+            "coords": [25,0],
+            "size": 20
+        },
+        "pi4_temp": {
+            "coords": [25,22],
+            "size": 20
+        },
+        "indoor_temp_logo": {
+            "coords": [50,5],
+            "size": 17
+        },
+        "indoor_temp": {
+            "coords": [68,0],
+            "size": 20
+        },
+        "outdoor_temp_logo": {
+            "coords": [110,5],
+            "size": 17
+        },
+        "outdoor_temp": {
+            "coords": [120,0],
+            "size": 20
+        }
+    },
+    "IPLogService": {
+        "separation_line": [0,83,-1,83],
+        "flag_logo": {
+            "coords": [5,49],
+            "size": 17
+        },
+        "country_text": {
+            "coords": [5,60],
+            "size": 15
+        },
+        "globe_logo": {
+            "coords": [53,50],
+            "size": 17
+        },
+        "ip_text": {
+            "coords": [70,50],
+            "size": 12
+        }
+    }
+}
