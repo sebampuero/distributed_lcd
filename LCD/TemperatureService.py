@@ -20,6 +20,8 @@ class TemperatureService(DisplayService):
         self.pi4_logo = temp_config['pi4_logo']
         self.pi2_temp = temp_config['pi2_temp']
         self.pi4_temp = temp_config['pi4_temp']
+        self.retropie_logo = temp_config['retropie_logo']
+        self.retropie_temp = temp_config['retropie_temp']
         self.indoor_temp_logo = temp_config['indoor_temp_logo']
         self.indoor_temp = temp_config['indoor_temp']
         self.outdoor_temp_logo = temp_config['outdoor_temp_logo']
@@ -28,6 +30,7 @@ class TemperatureService(DisplayService):
     def _update_values(self, vals: dict):
         self.pi2_temp_val = vals['pi2'][0:-2]
         self.pi4_temp_val = vals['pi4'][0:-2]
+        self.retropie_temp_val = vals['retropie'][0:-2]
         self.indoor_temp_val = str(round(float(vals['indoor']), 1))
         self.outdoor_temp_val = str(round(float(vals['outdoor']), 1))
 
@@ -41,6 +44,8 @@ class TemperatureService(DisplayService):
         draw.bitmap(tuple(self.pi4_logo['coords']), self.pi_logo_img.resize((size,size)), fill="white")
         draw.text(tuple(self.pi2_temp['coords']), text=self.pi2_temp_val, font=self.load_font(self.txt_font, self.pi2_temp['size']), fill="white")
         draw.text(tuple(self.pi4_temp['coords']), text=self.pi4_temp_val, font=self.load_font(self.txt_font, self.pi4_temp['size']), fill="white")
+        draw.text(tuple(self.retropie_logo['coords']), text="\uf11b", font=self.load_font(self.fa, self.retropie_logo['size']),fill="white")
+        draw.text(tuple(self.retropie_temp['coords']), text=self.retropie_temp_val, font=self.load_font(self.txt_font, self.retropie_temp['size']),fill="white")
         draw.text(tuple(self.indoor_temp_logo['coords']), text="\uf015", font=self.load_font(self.fa, self.indoor_temp_logo['size']),fill="white")
         draw.text(tuple(self.indoor_temp['coords']), text=self.indoor_temp_val, font=self.load_font(self.txt_font, self.indoor_temp['size']),fill="white")
         draw.text(tuple(self.outdoor_temp_logo['coords']), text="\uf2c8", font=self.load_font(self.fa, self.outdoor_temp_logo['size']),fill="white")

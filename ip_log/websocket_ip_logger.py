@@ -11,10 +11,10 @@ from botocore.exceptions import ClientError
 API_ENDPOINT = f"https://api.ip2loc.com/{os.environ['IP_LOG_KEY']}/"
 AVOID_IP = ['158.181.79.45']
 
-from logging.handlers import TimedRotatingFileHandler
+from logging.handlers import RotatingFileHandler
 
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-handler = TimedRotatingFileHandler(os.path.abspath("ip_log.log"), when='d')
+handler = RotatingFileHandler("/home/pi/dist_systems/ip_log/ip_log.log", maxBytes=5*1024*1024, backupCount=1)
 handler.setFormatter(formatter)
 logger = logging.getLogger()
 logger.addHandler(handler)
@@ -25,17 +25,20 @@ sqs = boto3.resource('sqs')
 queue = sqs.get_queue_by_name(QueueName="RaspiQueue")
 
 async def hello():
-    uri = "wss://sebampuerom.de:8765"
-    async for websocket in websockets.connect(uri, ssl=ssl_context, ping_timeout=60, close_timeout=60, ping_interval=30):
-        try:
-            await websocket.send("Connected")
-            async for message in websocket:
-                await consumer(message)
-        except websockets.ConnectionClosed:
-            logger.info("Disconnected, retrying")
-            continue
-        else:
-            continue
+    uri = "ws://10.8.0.1:8765"
+    while True:
+        async for websocket in websockets.connect(uri):#, ping_timeout=60, close_timeout=60, ping_interval=30):
+            try:
+                await websocket.send("Connected")
+                async for message in websocket:
+                    await consumer(message)
+            except websockets.ConnectionClosed:
+                logger.info("Disconnected, retrying")
+                continue
+            except Exception as e:
+                logger.error("General error", exc_info=True)
+                asyncio.sleep(20)
+                continue
 
 async def consumer(message):
     logger.info(f"Received new message: {message}")
@@ -64,8 +67,8 @@ async def consumer(message):
         logging.error("Exception occurred", exc_info=True)
         
 
-ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-ssl_context.load_verify_locations("/home/pi/dist_systems/ip_log/cert.pem")
+#ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+#ssl_context.load_verify_locations("/home/pi/dist_systems/ip_log/cert.pem")
 
 if __name__ == '__main__':
     asyncio.run(hello())

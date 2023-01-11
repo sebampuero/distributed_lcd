@@ -1,11 +1,11 @@
 from luma.core.interface.serial import spi
 from luma.core.render import canvas
 from luma.lcd.device import st7735
-from logging.handlers import TimedRotatingFileHandler
+from logging.handlers import RotatingFileHandler
 import time, boto3, json, os, importlib, logging, sys
 
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-handler = TimedRotatingFileHandler(os.path.abspath("lcd.log"), when='d')
+handler = RotatingFileHandler("/home/pi/dist_systems/LCD/lcd.log", maxBytes=5*1024*1024, backupCount=1)
 handler.setFormatter(formatter)
 logger = logging.getLogger()
 logger.addHandler(handler)
@@ -47,6 +47,7 @@ def main():
                 with canvas(device) as draw:
                     for v in services_dict.values():
                         v['service'].display(draw,v['data'])
+                logger.info(f"Processed: {body}")
             except json.JSONDecodeError:
                 logger.error("bad format", exc_info=True)
             except Exception:

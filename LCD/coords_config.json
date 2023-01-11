@@ -9,6 +9,14 @@
             "coords": [0,22],
             "size": 25
         },
+        "retropie_logo": {
+            "coords": [50,27],
+            "size": 17
+        },
+        "retropie_temp": {
+            "coords": [70,22],
+            "size": 20
+        },
         "pi2_temp": {
             "coords": [25,0],
             "size": 20
