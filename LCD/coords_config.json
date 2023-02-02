@@ -17,6 +17,14 @@
             "coords": [70,22],
             "size": 20
         },
+        "laptop_ubuntu_logo": {
+            "coords": [97,27],
+            "size": 17
+        },
+        "laptop_ubuntu_temp": {
+            "coords": [117,22],
+            "size": 20
+        },
         "pi2_temp": {
             "coords": [25,0],
             "size": 20

@@ -21,19 +21,22 @@ def main():
             last_retrieval_time = 0
             last_berlin_temp = 0.0
             if time.time() - last_retrieval_time > TIME_INTERVAL_API:
-                temperature = str(get_berlin_temperature())
+                temperature = str(round(float(get_berlin_temperature()), 1))
                 last_berlin_temp = temperature
                 last_retrieval_time = time.time()
-            inside_temp = get_internal_temp()
+            inside_temp = str(round(float(get_internal_temp()), 1))
+            #TODO: optimize
             raspi_temp = subprocess.Popen("vcgencmd measure_temp", shell=True, stdout=subprocess.PIPE)
             raspi_temp = raspi_temp.stdout.read().decode()
-            raspi_temp = raspi_temp.replace("temp=", "").replace("'C", "").replace('\n', '')
+            raspi_temp = raspi_temp.replace("temp=", "").replace("'C", "").replace('\n', '')[0:-2]
             raspi_temp2 = subprocess.Popen("ssh pi@pi4g vcgencmd measure_temp", shell=True, stdout=subprocess.PIPE)
             raspi_temp2 = raspi_temp2.stdout.read().decode()
-            raspi_temp2= raspi_temp2.replace("temp=", "").replace("'C", "").replace('\n', '')
+            raspi_temp2= raspi_temp2.replace("temp=", "").replace("'C", "").replace('\n', '')[0:-2]
             retropie = subprocess.Popen("ssh pi@retropie vcgencmd measure_temp", shell=True, stdout=subprocess.PIPE)
             retropie = retropie.stdout.read().decode()
-            retropie= retropie.replace("temp=", "").replace("'C", "").replace('\n', '')
+            retropie= retropie.replace("temp=", "").replace("'C", "").replace('\n', '')[0:-2]
+            laptop_ubuntu = subprocess.Popen("ssh ubuntu@ubuntu bash /etc/telegraf/scripts/cpu_temp.sh", shell=True, stdout=subprocess.PIPE)
+            laptop_ubuntu = laptop_ubuntu.stdout.read().decode()[:2]
             data = {
                 "Id": str(int(time.time())),
                 "MessageBody": json.dumps({
@@ -43,6 +46,7 @@ def main():
                         "pi2": raspi_temp,
                         "pi4": raspi_temp2,
                         "retropie": retropie,
+                        "laptop_ubuntu": laptop_ubuntu,
                         "indoor": inside_temp,
                         "outdoor": last_berlin_temp
                     }

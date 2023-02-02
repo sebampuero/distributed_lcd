@@ -9,7 +9,7 @@ import time
 import json
 from botocore.exceptions import ClientError
 API_ENDPOINT = f"https://api.ip2loc.com/{os.environ['IP_LOG_KEY']}/"
-AVOID_IP = ['158.181.79.45']
+AVOID_IP = ['5.28.107.131']
 
 from logging.handlers import RotatingFileHandler
 
