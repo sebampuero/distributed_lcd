@@ -9,7 +9,7 @@ handler = RotatingFileHandler("/home/pi/dist_systems/LCD/lcd.log", maxBytes=5*10
 handler.setFormatter(formatter)
 logger = logging.getLogger()
 logger.addHandler(handler)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 serial = spi()
 args = {

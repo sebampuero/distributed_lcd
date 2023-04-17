@@ -41,14 +41,15 @@ async def hello():
                 continue
 
 async def consumer(message):
-    logger.info(f"Received new message: {message}")
+    #logger.info(f"Received new message: {message}")
     if message in AVOID_IP:
         return
     response = requests.request('GET', API_ENDPOINT + message)
     try:
         response = response.json()
-        with open(os.path.abspath('ip_logs.log'), 'a') as f:
-            f.write(f"Country: {response['location']['country']['name']} City: {response['location']['city']} IP: {response['connection']['ip']}\n")
+        #with open(os.path.abspath('ip_logs.log'), 'a') as f:
+        #    f.write(f"Country: {response['location']['country']['name']} City: {response['location']['city']} IP: {response['connection']['ip']}\n")
+        logger.info(f"Country: {response['location']['country']['name']} City: {response['location']['city']} IP: {response['connection']['ip']}")
         data = {
             "Id": str(int(time.time())),
             "MessageBody": json.dumps({
